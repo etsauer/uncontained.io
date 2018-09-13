@@ -90,6 +90,7 @@ function runServer() {
   });
   gulp.watch("./site/themes/*/src/**/*.scss", ["sass"])
   gulp.watch(["./site/**/*", "!./site/themes/*/src/**"], ["hugo"]);
+  gulp.watch(["./src/js/*.js"], ["js"]);
 }
 
 /**

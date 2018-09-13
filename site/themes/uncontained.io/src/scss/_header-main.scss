@@ -26,6 +26,9 @@
 
 .search-container {
   margin: auto 0;
+  form {
+    display:flex;
+  }
   input[type=text] {
     padding: 6px;
     font-size: 17px;
@@ -34,7 +37,6 @@
     color: $white;
   }
   button {
-    float: right;
     height: 37px;
     width: 37px;
     background: theme-color("medium-blue");

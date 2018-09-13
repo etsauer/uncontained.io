@@ -1,6 +1,6 @@
 body {
   background-color: theme-color("gray");
-
+  position: relative;
 }
 
 main {
@@ -22,6 +22,6 @@ img {
   font-size: 1.25em;
 }
 
-.row {
+.block {
   display: block;
 }

@@ -15,7 +15,7 @@ draft: false
 Red Hat Containers & PaaS CoP
 v2.0, 2016-08-18
 :scripts_repo: https://github.com/rhtconsulting/rhc-ose
-:toc: macro
+:toc: right
 :toc-title:
 
 include::site/layouts/variables.adoc[]

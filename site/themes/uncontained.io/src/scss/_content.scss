@@ -138,3 +138,22 @@ pre {
   margin: 1em 1em 2em 1em;
   padding: .75em 1.5em;
 }
+
+.side-nav {
+  background-color: theme-color("dark-blue");
+  color: theme-color("white");
+  .search-container {
+    margin: 0 -15px;
+    input {
+      width: 100%;
+    }
+  }
+}
+
+#toc {
+  ul.nav {
+    li.active {
+      background-color: theme-color("medium-blue");
+    }
+  }
+}
