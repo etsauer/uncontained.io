@@ -25,9 +25,9 @@ pipeline {
     stage ('Fetch Source Code') {
       steps {
         script {
-        hygieiaBuildPublishStep buildStatus: 'InProgress'
-        git url: "${APPLICATION_SOURCE_REPO}", branch: "${APPLICATION_SOURCE_REF}"
-
+          hygieiaBuildPublishStep buildStatus: 'InProgress'
+          git url: "${APPLICATION_SOURCE_REPO}", branch: "${APPLICATION_SOURCE_REF}"
+          env.commit = sh(script:"git rev-parse HEAD", returnStdout: true)
         }
       }
     }
@@ -35,7 +35,6 @@ pipeline {
     stage ('Build Site from Source') {
       steps {
         container('builder') {
-          env.commit = sh(script:"git rev-parse HEAD", returnStdout: true)
           sh 'npm install'
           sh 'npm run build'
         }
