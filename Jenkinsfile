@@ -35,6 +35,7 @@ pipeline {
     stage ('Build Site from Source') {
       steps {
         container('builder') {
+          env.commit = sh(script:"git rev-parse HEAD", returnStdout: true)
           sh 'npm install'
           sh 'npm run build'
         }
@@ -48,6 +49,8 @@ pipeline {
         }
         success {
           hygieiaBuildPublishStep buildStatus: 'Success'
+          sh "touch ${APP_NAME}.zip"
+          hygieiaArtifactPublishStep artifactDirectory: '.', artifactGroup: 'uncontained.io', artifactName: '${APP_NAME}.zip', artifactVersion: '${commit}-${BUILD_NUMBER}'
         }
       }
     }
@@ -114,7 +117,7 @@ pipeline {
       }
       post {
         success {
-          hygieiaDeployPublishStep applicationName: "${APP_NAME}", artifactDirectory: 'dist/', artifactGroup: 'uncontained.io', artifactName: 'index.html', artifactVersion: "${BUILD_NUMBER}-${DEV_NAMESPACE}", buildStatus: 'Success', environmentName: "${DEV_NAMESPACE}"
+          hygieiaDeployPublishStep applicationName: "${APP_NAME}", artifactDirectory: '.', artifactGroup: 'uncontained.io', artifactName: '${APP_NAME}.zip', artifactVersion: "${commit}-${BUILD_NUMBER}", buildStatus: 'Success', environmentName: "${DEV_NAMESPACE}"
         }
       }
     }
@@ -145,7 +148,7 @@ pipeline {
           }
           sh 'mkdir dist/'
           sh 'touch dist/index.html'
-          hygieiaDeployPublishStep applicationName: "${APP_NAME}", artifactDirectory: 'dist/', artifactGroup: 'uncontained.io', artifactName: 'index.html', artifactVersion: "${BUILD_NUMBER}-${TEST_NAMESPACE}", buildStatus: 'Success', environmentName: "${TEST_NAMESPACE}"
+          hygieiaDeployPublishStep applicationName: "${APP_NAME}", artifactDirectory: '.', artifactGroup: 'uncontained.io', artifactName: '${APP_NAME}.zip', artifactVersion: "${commit}-${BUILD_NUMBER}", buildStatus: 'Success', environmentName: "${TEST_NAMESPACE}"
         }
       }
     }
@@ -176,7 +179,7 @@ pipeline {
           }
           sh 'mkdir dist/'
           sh 'touch dist/index.html'
-          hygieiaDeployPublishStep applicationName: "${APP_NAME}", artifactDirectory: 'dist/', artifactGroup: 'uncontained.io', artifactName: 'index.html', artifactVersion: "${BUILD_NUMBER}-${STAGE_NAMESPACE}", buildStatus: 'Success', environmentName: "${STAGE_NAMESPACE}"
+          hygieiaDeployPublishStep applicationName: "${APP_NAME}", artifactDirectory: 'dist/', artifactGroup: 'uncontained.io', artifactName: 'index.html', artifactVersion: "${commit}-${BUILD_NUMBER}", buildStatus: 'Success', environmentName: "${STAGE_NAMESPACE}"
         }
       }
     }
@@ -212,7 +215,7 @@ pipeline {
                 docker://${imageRegistry} docker://${registry}/${PROD_NAMESPACE}/${APP_NAME}
               """
               sh 'mkdir dist/ && touch dist/index.html'
-              hygieiaDeployPublishStep applicationName: "${APP_NAME}", artifactDirectory: 'dist/', artifactGroup: 'uncontained.io', artifactName: 'index.html', artifactVersion: "${BUILD_NUMBER}-${PROD_NAMESPACE}", buildStatus: 'Success', environmentName: "${PROD_NAMESPACE}"
+              hygieiaDeployPublishStep applicationName: "${APP_NAME}", artifactDirectory: 'dist/', artifactGroup: 'uncontained.io', artifactName: 'index.html', artifactVersion: "${commit}-${BUILD_NUMBER}", buildStatus: 'Success', environmentName: "${PROD_NAMESPACE}"
             }
 
           }
